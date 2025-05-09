@@ -2,17 +2,17 @@
 
 Redis 不是简单的键值存储，它实际上是一个数据结构服务器，支持不同类型的值。这意味着在传统键值存储中，您将字符串键与字符串值相关联，而在 Redis 中，该值不仅限于简单的字符串，还可以容纳更复杂的数据结构。以下是 Redis 中支持的所有数据结构的列表：  
 
-|   |   |
-|---|---|
-|类型|说明|
-|String|字符串|
-|Hash|散列，是由与值相关联的字段组成的内容。字段和值都是字符串。这与 Ruby 或 Python 哈希非常相似。  <br>类似于 JavaScript 中的对象结构。|
-|List|列表，根据插入顺序排序的字符串元素的集合。它们基本上是链表。|
-|Set|未排序的字符串元素集合，集合中的数据是不重复的。|
-|ZSet|与 Sets 类似，但每个字符串元素都与一个称为分数的浮点值相关联。元素总是按它们的分数排序，因此与 Sets 不同，可以检索一系列元素（例如，您可能会问：给我前10名或后10名）。|
-|Bit arrays（或 bitmaps）|可以使用特殊命令像位数组一样处理字符串值：您可以设置和清除单个位，计数所有设置为1的位，找到第一个设置或未设置的位，依此类推。|
-|HyperLogLogs|这是一个概率数据结构，用于估计集合的基数。|
-|Streams|提供抽象日志数据类型的类似地图项的仅追加集合。|
+|                       |                                                                                             |
+| --------------------- | ------------------------------------------------------------------------------------------- |
+| 类型                    | 说明                                                                                          |
+| String                | 字符串                                                                                         |
+| Hash                  | 散列，是由与值相关联的字段组成的内容。字段和值都是字符串。这与 Ruby 或 Python 哈希非常相似。  <br>类似于 JavaScript 中的对象结构。           |
+| List                  | 列表，根据插入顺序排序的字符串元素的集合。它们基本上是链表。                                                              |
+| Set                   | 未排序的字符串元素集合，集合中的数据是不重复的。                                                                    |
+| ZSet                  | 与 Sets 类似，但每个字符串元素都与一个称为分数的浮点值相关联。元素总是按它们的分数排序，因此与 Sets 不同，可以检索一系列元素（例如，您可能会问：给我前10名或后10名）。 |
+| Bit arrays（或 bitmaps） | 可以使用特殊命令像位数组一样处理字符串值：您可以设置和清除单个位，计数所有设置为1的位，找到第一个设置或未设置的位，依此类推。                             |
+| HyperLogLogs          | 用来做基数统计的算法，HyperLogLog 的优点是，在输入元素的数量或者体积非常非常大时，计算基数所需的空间总是固定 的、并且是很小的。                      |
+| Streams               | 提供抽象日志数据类型的类似地图项的仅追加集合。                                                                     |
 
 ## Redis 中的键  
   
@@ -909,7 +909,7 @@ ZADD key score member [score member ...]
 ```sh
 # 通过索引区间返回有序集合指定区间内的成员，分数从低到高排序
 ZRANGE key start stop [WITHSCORES]
-127.0.0.1:6379> zrange myzset 0 -1 WITHSCORES # 递增排列
+127.0.0.1:6379> zrange myzset 0 -1 withscores # 递增排列
  1) "jojo"
  2) "60"
  3) "joson"
@@ -923,7 +923,7 @@ ZRANGE key start stop [WITHSCORES]
 
 # 通过索引区间返回有序集合指定区间内的成员，分数从高到低排序
 ZREVRANGE key start stop [WITHSCORES]
-127.0.0.1:6379> zrevrange myzset 0 -1 WITHSCORES # 递减排列
+127.0.0.1:6379> zrevrange myzset 0 -1 withscores # 递减排列
  1) "tom"
  2) "98"
  3) "alex"
@@ -937,7 +937,7 @@ ZREVRANGE key start stop [WITHSCORES]
 
 # 返回有序集中指定分数区间内的成员，分数从低到高排序
 ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]
-127.0.0.1:6379> zrangebyscore myzset 60 80 withscores # 返回分数介于60-80直接的人员
+127.0.0.1:6379> zrangebyscore myzset 60 80 withscores # 返回分数介于60-80直接的人员，递增排列
  1) "jojo"
  2) "60"
  3) "joson"
@@ -968,23 +968,270 @@ ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]
 # `-inf`（负无穷大）：表示分数范围的下限为最小值。
 # 这两个符号覆盖所有可能的分数值（从负无穷到正无穷）。
 
-# 返回有序集中指定分数区间内的成员，分数从高到低排序
+# 返回有序集合中指定分数区间内的成员，分数从高到低排序
 ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]
-
+127.0.0.1:6379> zrevrangebyscore myzset 98 80 withscores # 递减排列
+1) "tom"
+2) "98"
+3) "alex"
+4) "98"
+5) "tina"
+6) "80"
 
 # 返回有序集合中指定成员的排名，有序集成员按分数值（从小到大）排序
 ZRANK key member
+127.0.0.1:6379> zrange myzset 0 -1 withscores
+ 1) "jojo"
+ 2) "60"
+ 3) "joson"
+ 4) "60"
+ 5) "peter"
+ 6) "65"
+ 7) "jack"
+ 8) "75"
+ 9) "tina"
+10) "80"
+11) "alex"
+12) "98"
+13) "tom"
+14) "98"
+127.0.0.1:6379> zrank myzset alex # 升序 排名第6
+(integer) 5
 
 # 返回有序集合中指定成员的排名，有序集成员按分数值（从大到小）排序
 ZREVRANK key member
+127.0.0.1:6379> zrevrange myzset 0 -1 withscores
+ 1) "tom"
+ 2) "98"
+ 3) "alex"
+ 4) "98"
+ 5) "tina"
+ 6) "80"
+ 7) "jack"
+ 8) "75"
+ 9) "peter"
+10) "65"
+11) "joson"
+12) "60"
+13) "jojo"
+14) "60"
+
+127.0.0.1:6379> zrevrank myzset alex
+(integer) 1 # 降序 排名第二
 
 # 获取有序集合的成员数
 ZCARD key
+127.0.0.1:6379> zcard myzset
+(integer) 7
 
 # 返回有序集中，成员的分数值
 ZSCORE key member
+127.0.0.1:6379> zscore myzset alex
+"98"
 
 # 计算在有序集合中指定区间分数的成员数
 ZCOUNT key min max
+127.0.0.1:6379> zcount myzset 80 98
+(integer) 3
+```
 
+### 修改
+
+```sh
+# 向有序集合添加一个或多个成员，或者更新已存在成员的分数
+ZADD key score member [score member ...]
+127.0.0.1:6379> zadd myzset 62 jojo 72 peter
+(integer) 0
+127.0.0.1:6379> zrange myzset 0 -1 withscores
+ 1) "joson"
+ 2) "60"
+ 3) "jojo"
+ 4) "62" # here
+ 5) "peter"
+ 6) "72" # here
+ 7) "jack"
+ 8) "75"
+ 9) "tina"
+10) "80"
+11) "alex"
+12) "98"
+13) "tom"
+14) "98"
+
+# 有序集合中对指定成员的分数加上增量 increment
+ZINCRBY key increment member
+127.0.0.1:6379> zincrby myzset 2 jojo
+"64"
+```
+
+### 删除
+
+```sh
+# 移除有序集合中的一个或多个成员
+ZREM key member [member ...]
+127.0.0.1:6379> zadd salary 3000 tom 3500 joe 4000 tom 5000 peter 8000 jack
+(integer) 4
+# 移除tom
+127.0.0.1:6379> zrem salary tom
+(integer) 1
+127.0.0.1:6379> zrange salary 0 -1 withscores
+1) "joe"
+2) "3500"
+3) "peter"
+4) "5000"
+5) "jack"
+6) "8000"
+
+# 移除有序集合中给定的排名区间的所有成员
+ZREMRANGEBYRANK key start stop
+
+127.0.0.1:6379> zremrangebyrank salary 0 1 # 移除第一个 和 第二个成员
+(integer) 2
+127.0.0.1:6379> zrange salary 0 -1 withscores
+1) "jack"
+2) "8000"
+
+# 移除有序集合中给定的分数区间的所有成员
+ZREMRANGEBYSCORE key min max
+127.0.0.1:6379> zadd salary 3000 tom 3500 joe 4000 tom 5000 peter 8000 jack
+(integer) 3
+127.0.0.1:6379> zrange salary 0 -1 withscores
+1) "joe"
+2) "3500"
+3) "tom"
+4) "4000"
+5) "peter"
+6) "5000"
+7) "jack"
+8) "8000"
+# 移除 3000 到 4000 的员工数
+127.0.0.1:6379> zremrangebyscore salary 3000 4000
+(integer) 2
+127.0.0.1:6379> zrange salary 0 -1 withscores
+9) "peter"
+10) "5000"
+11) "jack"
+12) "8000"
+```
+
+### 有序集合间聚合运算
+```sh
+# 计算给定的一个或多个有序集的交集并将结果集存储在新的有序集合 destination 中
+ZINTERSTORE destination numkeys key [key ...]
+# 集合的数量numkeys，即明确输入集合数量
+# 有序集合
+127.0.0.1:6379> zadd mid_sco 70 'lilei' 70 'hanmeimei' 99.5 'jack'
+(integer) 3
+
+# 另外一个有序集合
+127.0.0.1:6379> zadd fin_sco 80 'lilei' 80 'hanmeimei' 100 'jack'
+(integer) 
+
+# 集合合并运算
+127.0.0.1:6379> zinterstore sum_point 2 mid_sco fin_sco
+(integer) 3
+127.0.0.1:6379> zrange sum_point 0 -1 withscores
+4) "hanmeimei"
+5) "150"
+6) "lilei"
+7) "150"
+8) "jack"
+9) "199.5"
+
+# 计算给定的一个或多个有序集的并集，并存储在新的 key 中
+ZUNIONSTORE destination numkeys key [key ...]
+127.0.0.1:6379> zadd programmer 8000 'alice' 10000 'bob'
+(integer) 2
+127.0.0.1:6379> zadd manager 20000 'tom' 12000 'bob'
+(integer) 2
+127.0.0.1:6379> zunionstore res-salary 2 programmer manager WEIGHTS 1 3
+(integer) 3
+127.0.0.1:6379> zrange res-salary 0 -1 withscores
+4) "alice"
+5) "8000"
+6) "bob"
+7) "46000"
+8) "tom"
+9) "60000"
+
+# 结果分析
+Alice仅存在于 programmer：8000 * 1 = 8000
+Bob存在于两个集合：10000*1 + 12000*3 = 46000
+Tom 仅存在于 manager：20000 * 3 = 60000
+```
+
+
+## HyperLogLogs
+
+HyperLogLog 是 Redis 中一个强大的数据结构，它允许你估计一个集合中唯一元素的数量，即使是对于非常大的数据集。这被称为基数估计（cardinality estimation）。
+
+Redis HyperLogLog 是用来做基数统计的算法，HyperLogLog 的优点是，在输入元素的数量或者体积非常非常大时，计算基数所需的空间总是固定的、并且是很小的。
+
+在 Redis 里面，每个 HyperLogLog 键只需要花费 12 KB 内存，就可以计算接近 2^64 个不同元素的基数。这和计算基数时，元素越多耗费内存就越多的集合形成鲜明对比。
+
+但是，因为 HyperLogLog 只会根据输入元素来计算基数，而不会储存输入元素本身，所以 HyperLogLog 不能像集合那样，返回输入的各个元素。
+
+### 添加
+
+使用 `PFADD` 命令向 HyperLogLog 添加元素。如果 HyperLogLog 不存在，`PFADD` 将会自动创建它。
+```sh
+# 向 HyperLogLog 添加一个或多个元素。
+PFADD key element [element ...]
+127.0.0.1:6379> pfadd users user1 user2 user3 user4 user5
+(integer) 1
+
+# 给定 HyperLogLog 的基数估算值。
+PFCOUNT key [key ...]
+127.0.0.1:6379> pfcount users
+(integer) 5 # 重要的是要记住，HyperLogLog 提供的是一个估计值，而不是一个精确的计数。
+
+# 将多个 HyperLogLog 合并为一个 HyperLogLog ，合并后的 HyperLogLog 的基数估算值是通过对所有 给定 HyperLogLog 进行并集计算得出的。
+PFMERGE destkey sourcekey [sourcekey ...]
+127.0.0.1:6379> pfadd users user1 user2 user3 user4 user5
+(integer) 1
+127.0.0.1:6379>  pfadd users2 user6 user7 user3
+(integer) 1
+
+# 并集合并后共 7个元素
+127.0.0.1:6379> pfmerge new_users users users2
+OK
+127.0.0.1:6379> pfcount new_users
+(integer) 7
+```
+
+## 通用命令
+
+```sh
+# 返回所有 key
+KEYS *
+
+# 返回所有以 my 开头的 key
+KEYS my*
+
+# 获取 key 的类型
+TYPE key
+
+# 查询某个 key 是否存在
+EXISTS key [key ...]
+
+# 将 key 改名为 newkey
+RENAME key newkey
+
+# 删除指定 key
+DEL key [key ...]
+
+# 从当前数据库中随机返回(不删除)一个 key
+RANDOMKEY
+
+# 对 key 进行重命名
+RENAME key newkey
+
+# 清空当前数据库所有内容
+FLUSHDB
+
+# 清空所有数据库内容
+FLUSHALL
+
+# 将当前数据库的 key 移动到给定的数据库 db 当中
+MOVE key db
 ```
