@@ -14,12 +14,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "10使用nodejs操作redis.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "10使用nodejs操作redis"
+              "title": "README"
             },
             "group": "f8cd1375236c9bf2"
           }
@@ -36,13 +36,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "10使用nodejs操作redis.md",
+                "file": "README.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "10使用nodejs操作redis 的大纲"
+              "title": "README 的大纲"
             },
             "group": "f8cd1375236c9bf2"
           }
@@ -196,14 +196,17 @@
   },
   "active": "542d77d18ac4e442",
   "lastOpenFiles": [
+    "10nodejs操作redis.md",
+    "README.md",
     "9redis持久化.md",
+    "8redis发布订阅.md",
     "7redis事务.md",
+    "1redis介绍.md",
+    "6redis过期时间.md",
     "assets/tran1.png",
     "assets/tran3.png",
     "assets/tran2.png",
-    "10使用nodejs操作redis.md",
     "2redis安装.md",
-    "6redis过期时间.md",
     "5redis常用数据类型及操作命令.md",
     "assets/aof5.png",
     "assets/aof2.png",
@@ -212,11 +215,8 @@
     "Pasted image 20250512173159.png",
     "assets/aof1.png",
     "assets/rdb1.png",
-    "8redis发布订阅.md",
     "3redis配置.md",
-    "README.md",
     "4redis中的多个数据库.md",
-    "1redis介绍.md",
     "assets"
   ]
 }
