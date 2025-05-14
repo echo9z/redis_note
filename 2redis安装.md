@@ -84,14 +84,14 @@ make install
   
 编译后在 Redis 源代码目录的 src 文件夹中会有以下几个可执行文件：  
 
-| 可执行文件            | 说明           |
-| ---------------- | ------------ |
-| redis-server     | Redis 服务器    |
-| redis-cli        | Redis 命令行客户端 |
-| redis-benchmark  | Redis 性能测试工具 |
-| redis-check-aof  | AOF 文件修复工具   |
-| redis-check-dump | RDB 文件检查工具   |
-| redis-sentinel   | 哨兵模式工具       |
+| 可执行文件            | 说明                |
+| ---------------- | ----------------- |
+| redis-server     | Redis 服务器         |
+| redis-cli        | Redis 命令行客户端      |
+| redis-benchmark  | Redis 性能测试工具      |
+| redis-check-aof  | AOF 文件修复工具        |
+| redis-check-dump | RDB 文件检查工具        |
+| redis-sentinel   | 哨兵模式工具，redis 集群使用 |
 > 注意：通过编译源码安装的话，也会产生一个 `redis.conf `的配置文件。
 
 我们最常用是 `redis-server` 和 `redis-cli` 。  
